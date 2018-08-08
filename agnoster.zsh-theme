@@ -131,12 +131,22 @@ prompt_virtualenv() {
   fi
 }
 
+prompt_docker() {
+  local DOCKER_TEXT=$(echo ${DOCKER_SWARM_NAME:-$DOCKER_HOST} | sed -E 's#^tcp://|:2376$##g')
+  if [[ -n $DOCKER_TEXT ]]; then
+    color=yellow
+    prompt_segment $color $PRIMARY_FG
+    print -Pn " \uf308 $DOCKER_TEXT "
+  fi
+}
+
 ## Main prompt
 prompt_agnoster_main() {
   RETVAL=$?
   CURRENT_BG='NONE'
   prompt_status
   prompt_context
+  prompt_docker
   prompt_virtualenv
   prompt_dir
   prompt_git
